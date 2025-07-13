@@ -40,7 +40,6 @@
 #define VESC3 0x00000064
 #define VESC4 0x00000065
 
-#define SERVO 0x
 
 /* USER CODE END PTD */
 

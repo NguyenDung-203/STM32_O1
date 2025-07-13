@@ -25,15 +25,37 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "FS-iA6B.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+#define ERPM_MAX   4000
+#define ERPM_MIN  -4000
+
+#define VESC1 0x00000040
+#define VESC2 0x00000043
+#define VESC3 0x00000064
+#define VESC4 0x00000065
+
+#define SERVO 0x00000000
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+extern uint8_t ibus_rx_buf[32];  // Ibus
+extern uint8_t ibus_rx_cplt_flag;
+
+CAN_TxHeaderTypeDef Can_Tx_Header;
+
+uint32_t TxMailBox;
+
+uint8_t Can_Tx_Data[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
 
 /* USER CODE END PD */
 
@@ -93,12 +115,66 @@ int main(void)
   MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
 
+  LL_USART_EnableIT_RXNE(UART5); // bat ngat ibus
+
+  HAL_CAN_Start(&hcan1);
+  Can_Tx_Header.DLC = 8;
+  Can_Tx_Header.IDE = CAN_ID_EXT;
+  Can_Tx_Header.RTR = CAN_RTR_DATA;
+  Can_Tx_Header.TransmitGlobalTime = DISABLE;
+
+  HAL_CAN_Start(&hcan2);
+  Can_Tx_Header.ExtId = SERVO;
+  Can_Tx_Header.DLC = 8;
+  Can_Tx_Header.IDE = CAN_ID_EXT;
+  Can_Tx_Header.RTR = CAN_RTR_DATA;
+  Can_Tx_Header.TransmitGlobalTime = DISABLE;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(iBus.SwA == 2000)
+	  {
+		  if(iBus.RV > 1530 || iBus.RV < 1470)
+		  {
+			  static int16_t control_prev;
+			  int16_t control = 0.6f*control_prev + 0.4f*(iBus.RV - 1500)/2.0f;
+			  control_prev = control;
+			  Can_Tx_Data[0] = (control >> 8) & 0xFF;
+			  Can_Tx_Data[1] = (control >> 8) & 0xFF;
+			  Can_Tx_Data[2] = control & 0xFF;
+
+			  Can_Tx_Header.ExtId = VESC1;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+			  Can_Tx_Header.ExtId = VESC2;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+			  HAL_Delay(1);
+			  Can_Tx_Header.ExtId = VESC3;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+			  Can_Tx_Header.ExtId = VESC4;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+		  }
+		  else
+		  {
+			  Can_Tx_Data[0] = 0;
+			  Can_Tx_Data[1] = 0;
+			  Can_Tx_Data[2] = 0;
+
+			  Can_Tx_Header.ExtId = VESC1;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+			  Can_Tx_Header.ExtId = VESC2;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+			  HAL_Delay(1);
+			  Can_Tx_Header.ExtId = VESC3;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+			  Can_Tx_Header.ExtId = VESC4;
+			  HAL_CAN_AddTxMessage(&hcan1, &Can_Tx_Header, Can_Tx_Data, &TxMailBox);
+		  }
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

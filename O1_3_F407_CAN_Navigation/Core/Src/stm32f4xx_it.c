@@ -27,6 +27,12 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 
+uint8_t uart5_rx_data = 0;// Ibus
+uint8_t uart5_rx_flag = 0;
+
+uint8_t ibus_rx_buf[32];
+uint8_t ibus_rx_cplt_flag = 0;
+
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -204,6 +210,44 @@ void SysTick_Handler(void)
 void UART5_IRQHandler(void)
 {
   /* USER CODE BEGIN UART5_IRQn 0 */
+
+	static unsigned char cnt = 0;
+
+	if(LL_USART_IsActiveFlag_RXNE(UART5))
+	{
+		LL_USART_ClearFlag_RXNE(UART5);
+		uart5_rx_data = LL_USART_ReceiveData8(UART5);
+		uart5_rx_flag = 1;
+
+		switch(cnt)
+		{
+		case 0:
+			if(uart5_rx_data == 0x20)
+			{
+				ibus_rx_buf[cnt] = uart5_rx_data;
+				cnt++;
+			}
+			break;
+		case 1:
+			if(uart5_rx_data == 0x40)
+			{
+				ibus_rx_buf[cnt] = uart5_rx_data;
+				cnt++;
+			}
+			else
+				cnt = 0;
+			break;
+		case 31:
+			ibus_rx_buf[cnt] = uart5_rx_data;
+			cnt = 0;
+			ibus_rx_cplt_flag = 1;
+			break;
+		default:
+			ibus_rx_buf[cnt] = uart5_rx_data;
+			cnt++;
+			break;
+		}
+	}
 
   /* USER CODE END UART5_IRQn 0 */
   /* USER CODE BEGIN UART5_IRQn 1 */

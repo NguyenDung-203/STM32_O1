@@ -18,8 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "can.h"
-#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -94,9 +92,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_CAN1_Init();
   MX_UART5_Init();
-  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 
   LL_USART_EnableIT_RXNE(UART5); // bat ngat iBus

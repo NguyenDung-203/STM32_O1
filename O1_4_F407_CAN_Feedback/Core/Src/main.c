@@ -196,9 +196,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			case CAN_ID(VESC1,MSG_TYPE_HALL):
 				memcpy(data1.data, rxData, 8);
 				break;
-			case 0xF66:
-
-				break;
 		}
 	}
 }

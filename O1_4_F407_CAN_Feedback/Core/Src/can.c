@@ -63,11 +63,40 @@ void MX_CAN1_Init(void)
   CAN_Filter_Config.FilterScale = CAN_FILTERSCALE_32BIT;
   CAN_Filter_Config.SlaveStartFilterBank = 0;
 
-  // ID 0x00000F65
+  //Config
+  CAN_Filter_Config.FilterBank = 0;
+  CAN_Filter_Config.FilterIdHigh = (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) >> 16;
+  CAN_Filter_Config.FilterIdLow =  (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) & 0xFFFF;
+
+  CAN_Filter_Config.FilterMaskIdHigh = (CAN_ID(VESC2,MSG_TYPE_HALL) << 3 | 0x04) >> 16;
+  CAN_Filter_Config.FilterMaskIdLow  = (CAN_ID(VESC2,MSG_TYPE_HALL) << 3 | 0x04) & 0xFFFF;
+  HAL_CAN_ConfigFilter(&hcan1, &CAN_Filter_Config);
+
+  CAN_Filter_Config.FilterBank = 2;
+  CAN_Filter_Config.FilterIdHigh = (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) >> 16;
+  CAN_Filter_Config.FilterIdLow =  (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) & 0xFFFF;
+  HAL_CAN_ConfigFilter(&hcan1, &CAN_Filter_Config);
+
+  CAN_Filter_Config.FilterBank = 3;
+  CAN_Filter_Config.FilterIdHigh = (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) >> 16;
+  CAN_Filter_Config.FilterIdLow =  (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) & 0xFFFF;
+  HAL_CAN_ConfigFilter(&hcan1, &CAN_Filter_Config);
+
+  CAN_Filter_Config.FilterBank = 4;
+  CAN_Filter_Config.FilterIdHigh = (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) >> 16;
+  CAN_Filter_Config.FilterIdLow =  (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) & 0xFFFF;
+  HAL_CAN_ConfigFilter(&hcan1, &CAN_Filter_Config);
+
   CAN_Filter_Config.FilterBank = 0;
   CAN_Filter_Config.FilterIdHigh = (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) >> 16;
   CAN_Filter_Config.FilterIdLow =  (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) & 0xFFFF;
   HAL_CAN_ConfigFilter(&hcan1, &CAN_Filter_Config);
+
+  CAN_Filter_Config.FilterBank = 0;
+  CAN_Filter_Config.FilterIdHigh = (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) >> 16;
+  CAN_Filter_Config.FilterIdLow =  (CAN_ID(VESC1,MSG_TYPE_HALL) << 3 | 0x04) & 0xFFFF;
+  HAL_CAN_ConfigFilter(&hcan1, &CAN_Filter_Config);
+
   /* USER CODE END CAN1_Init 2 */
 
 }

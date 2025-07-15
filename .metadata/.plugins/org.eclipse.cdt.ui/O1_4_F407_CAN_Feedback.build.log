@@ -1,4 +1,4 @@
-14:09:10 **** Incremental Build of configuration Debug for project O1_4_F407_CAN_Feedback ****
+16:13:29 **** Incremental Build of configuration Debug for project O1_4_F407_CAN_Feedback ****
 make -j4 all 
 arm-none-eabi-gcc "../Core/Src/can.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/can.d" -MT"Core/Src/can.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/can.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
@@ -8,11 +8,11 @@ Finished building target: O1_4_F407_CAN_Feedback.elf
 arm-none-eabi-size  O1_4_F407_CAN_Feedback.elf 
 arm-none-eabi-objdump -h -S O1_4_F407_CAN_Feedback.elf  > "O1_4_F407_CAN_Feedback.list"
    text	   data	    bss	    dec	    hex	filename
-  14096	     12	   1724	  15832	   3dd8	O1_4_F407_CAN_Feedback.elf
+  14212	     12	   1724	  15948	   3e4c	O1_4_F407_CAN_Feedback.elf
 Finished building: default.size.stdout
  
 Finished building: O1_4_F407_CAN_Feedback.list
  
 
-14:09:12 Build Finished. 0 errors, 0 warnings. (took 1s.540ms)
+16:13:35 Build Finished. 0 errors, 0 warnings. (took 6s.184ms)
 
